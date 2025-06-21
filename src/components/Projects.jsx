@@ -97,7 +97,7 @@ const Projects = () => {
             key={project.title}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut", delay: index * 0.1 }}
+            transition={{ duration: 0.4, ease: "easeInOut", delay: index * 0.15 }}
             viewport={{ once: true, amount: 0.3 }}
             className="bg-gray-800 min-w-[280px] min-h-[440px] rounded-2xl shadow-lg overflow-hidden border border-violet-500 hover:scale-[1.03] hover:shadow-[0_4px_15px_rgba(139,92,246,0.4)] transition-all duration-300 flex flex-col"
             style={{ scrollSnapAlign: "start" }}
