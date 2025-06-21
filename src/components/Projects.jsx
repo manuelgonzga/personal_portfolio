@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef } from "react";
+import { motion } from "framer-motion";
 import { FiGithub, FiChevronRight, FiChevronLeft } from "react-icons/fi";
 
 const projects = [
@@ -48,14 +48,19 @@ const projects = [
 ];
 
 const Projects = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const scrollRef = useRef(null);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  // Función para desplazar el scroll horizontalmente
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 300; // pixeles a desplazar
+      if (direction === "left") {
+        scrollRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+      } else {
+        scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      }
+    }
+  };
 
   return (
     <section id="projects" className="py-16 px-4 bg-transparent text-white relative">
@@ -63,27 +68,27 @@ const Projects = () => {
         My Projects
       </h2>
 
-      {/* Flechas indicadoras SOLO en móvil, centradas verticalmente */}
-      {isMobile && (
-        <>
-          <div
-            aria-hidden="true"
-            className="absolute left-2 select-none pointer-events-none text-violet-400 opacity-60"
-            style={{ fontSize: "2rem", top: "60%", transform: "translateY(-50%)", position: "absolute" }}
-          >
-            <FiChevronLeft className="animate-slideLeftRight" />
-          </div>
-          <div
-            aria-hidden="true"
-            className="absolute right-2 select-none pointer-events-none text-violet-400 opacity-60"
-            style={{ fontSize: "2rem", top: "60%", transform: "translateY(-50%)", position: "absolute" }}
-          >
-            <FiChevronRight className="animate-slideLeftRight" />
-          </div>
-        </>
-      )}
+      {/* Flechas solo en móvil */}
+      <button
+        aria-label="Scroll left"
+        onClick={() => scroll("left")}
+        className="md:hidden absolute top-[55%] left-2 -translate-y-1/2 bg-violet-700 bg-opacity-60 hover:bg-opacity-90 text-white rounded-full p-2 z-20 shadow-lg"
+        style={{ backdropFilter: "blur(6px)" }}
+      >
+        <FiChevronLeft size={24} />
+      </button>
+
+      <button
+        aria-label="Scroll right"
+        onClick={() => scroll("right")}
+        className="md:hidden absolute top-[55%] right-2 -translate-y-1/2 bg-violet-700 bg-opacity-60 hover:bg-opacity-90 text-white rounded-full p-2 z-20 shadow-lg"
+        style={{ backdropFilter: "blur(6px)" }}
+      >
+        <FiChevronRight size={24} />
+      </button>
 
       <div
+        ref={scrollRef}
         className={`flex overflow-x-auto space-x-6 px-4
           scroll-snap-x mandatory
           md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-10 md:space-x-0 md:px-0
@@ -95,10 +100,10 @@ const Projects = () => {
         {projects.map((project, index) => (
           <motion.div
             key={project.title}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.6, ease: [0.8, 0.25, 0.25, 1], delay: index * 0.15 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut", delay: index * 0.1 }}
+            viewport={{ once: true, amount: 0.3 }}
             className="bg-gray-800 min-w-[280px] min-h-[440px] rounded-2xl shadow-lg overflow-hidden border border-violet-500 hover:scale-[1.03] hover:shadow-[0_4px_15px_rgba(139,92,246,0.4)] transition-all duration-300 flex flex-col"
             style={{ scrollSnapAlign: "start" }}
           >
@@ -132,20 +137,6 @@ const Projects = () => {
           </motion.div>
         ))}
       </div>
-
-      <style jsx>{`
-        .animate-slideLeftRight {
-          animation: slideLeftRight 2s ease-in-out infinite;
-        }
-        @keyframes slideLeftRight {
-          0%, 100% {
-            transform: translateX(0);
-          }
-          50% {
-            transform: translateX(5px);
-          }
-        }
-      `}</style>
     </section>
   );
 };
