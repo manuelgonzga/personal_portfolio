@@ -32,6 +32,18 @@ body {
   display: none;             /* Chrome, Safari, Opera */
 }
 
+@media (max-width: 767px) {
+  /* Para ocultar scrollbar pero permitir scroll en móviles */
+  html, body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    overflow-y: scroll; /* o auto si quieres */
+  }
+  html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari y Opera */
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }

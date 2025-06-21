@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
-import { FiGithub } from "react-icons/fi";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiGithub, FiChevronRight, FiChevronLeft } from "react-icons/fi";
 
 const projects = [
   {
@@ -47,11 +48,41 @@ const projects = [
 ];
 
 const Projects = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
-    <section id="projects" className="py-16 px-4 bg-transparent text-white">
+    <section id="projects" className="py-16 px-4 bg-transparent text-white relative">
       <h2 className="text-3xl font-bold text-center mb-12 text-violet-400 mt-10">
         My Projects
       </h2>
+
+      {/* Flechas indicadoras SOLO en móvil, centradas verticalmente */}
+      {isMobile && (
+        <>
+          <div
+            aria-hidden="true"
+            className="absolute left-2 select-none pointer-events-none text-violet-400 opacity-60"
+            style={{ fontSize: "2rem", top: "60%", transform: "translateY(-50%)", position: "absolute" }}
+          >
+            <FiChevronLeft className="animate-slideLeftRight" />
+          </div>
+          <div
+            aria-hidden="true"
+            className="absolute right-2 select-none pointer-events-none text-violet-400 opacity-60"
+            style={{ fontSize: "2rem", top: "60%", transform: "translateY(-50%)", position: "absolute" }}
+          >
+            <FiChevronRight className="animate-slideLeftRight" />
+          </div>
+        </>
+      )}
+
       <div
         className={`flex overflow-x-auto space-x-6 px-4
           scroll-snap-x mandatory
@@ -59,7 +90,7 @@ const Projects = () => {
           max-w-6xl mx-auto
           mad:min-h-[950px]
         `}
-        style={{ overflowY : "hidden" }}
+        style={{ overflowY: "hidden" }}
       >
         {projects.map((project, index) => (
           <motion.div
@@ -101,6 +132,20 @@ const Projects = () => {
           </motion.div>
         ))}
       </div>
+
+      <style jsx>{`
+        .animate-slideLeftRight {
+          animation: slideLeftRight 2s ease-in-out infinite;
+        }
+        @keyframes slideLeftRight {
+          0%, 100% {
+            transform: translateX(0);
+          }
+          50% {
+            transform: translateX(5px);
+          }
+        }
+      `}</style>
     </section>
   );
 };
