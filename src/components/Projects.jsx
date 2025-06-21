@@ -95,10 +95,10 @@ const Projects = () => {
         {projects.map((project, index) => (
           <motion.div
             key={project.title}
-            initial={{ opacity: 0, scale: 0.8 }}   // Empieza más pequeño y transparente
-            whileInView={{ opacity: 1, scale: 1 }} // Termina tamaño original y opaco
-            transition={{ duration: 0.4, ease: [0.8, 0.25, 0.25, 0.1], delay: index * 0.15 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.6, ease: [0.8, 0.25, 0.25, 1], delay: index * 0.15 }}
             className="bg-gray-800 min-w-[280px] min-h-[440px] rounded-2xl shadow-lg overflow-hidden border border-violet-500 hover:scale-[1.03] hover:shadow-[0_4px_15px_rgba(139,92,246,0.4)] transition-all duration-300 flex flex-col"
             style={{ scrollSnapAlign: "start" }}
           >
