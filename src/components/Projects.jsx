@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { motion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import { FiGithub, FiChevronRight, FiChevronLeft } from "react-icons/fi";
 
 const projects = [
@@ -49,18 +48,103 @@ const projects = [
 
 const Projects = () => {
   const scrollRef = useRef(null);
+  const [rebounding, setRebounding] = useState(false);
+  const [dragging, setDragging] = useState(false);
 
-  // Función para desplazar el scroll horizontalmente
-  const scroll = (direction) => {
-    if (scrollRef.current) {
-      const scrollAmount = 300; // pixeles a desplazar
-      if (direction === "left") {
-        scrollRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-      } else {
-        scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-      }
-    }
+  const bounceBack = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    el.style.transition = "transform 0.3s ease";
+    el.style.transform = "translateX(0px)";
+
+    setTimeout(() => {
+      el.style.transition = "";
+    }, 300);
   };
+
+  const scroll = (direction) => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const scrollAmount = 300;
+    const maxScrollLeft = el.scrollWidth - el.clientWidth;
+
+    if (direction === "left" && el.scrollLeft === 0) {
+      bounceEffect("left");
+      return;
+    }
+
+    if (direction === "right" && el.scrollLeft >= maxScrollLeft - 1) {
+      bounceEffect("right");
+      return;
+    }
+
+    el.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
+  };
+
+  const bounceEffect = (direction) => {
+    if (!scrollRef.current || rebounding) return;
+
+    setRebounding(true);
+    const el = scrollRef.current;
+
+    const distance = 15;
+    const sign = direction === "left" ? -1 : 1;
+
+    el.style.transition = "transform 0.2s ease";
+    el.style.transform = `translateX(${sign * distance}px)`;
+
+    setTimeout(() => {
+      bounceBack();
+      setRebounding(false);
+    }, 150);
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const maxScrollLeft = () => el.scrollWidth - el.clientWidth;
+
+    const handleTouchMove = (e) => {
+      if (!el) return;
+      const leftEdge = el.scrollLeft === 0;
+      const rightEdge = el.scrollLeft >= maxScrollLeft() - 1;
+      const touch = e.touches[0];
+
+      const maxDistance = 200; // máximo overscroll visual
+
+      if (leftEdge) {
+        // Cuánto se desplazó el dedo desde el borde izquierdo
+        const overscroll = Math.min(maxDistance, touch.clientX * 0.3);
+        el.style.transform = `translateX(${overscroll}px)`;
+      } else if (rightEdge) {
+        // Cuánto se desplazó el dedo desde el borde derecho (se invierte)
+        const overscroll = Math.min(maxDistance, (window.innerWidth - touch.clientX) * 0.3);
+        el.style.transform = `translateX(-${overscroll}px)`;
+      }
+
+      setDragging(true);
+    };
+
+    const handleTouchEnd = () => {
+      if (dragging) {
+        bounceBack();
+        setDragging(false);
+      }
+    };
+
+    el.addEventListener("touchmove", handleTouchMove);
+    el.addEventListener("touchend", handleTouchEnd);
+    return () => {
+      el.removeEventListener("touchmove", handleTouchMove);
+      el.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [dragging]);
 
   return (
     <section id="projects" className="py-16 px-4 bg-transparent text-white relative">
@@ -93,22 +177,13 @@ const Projects = () => {
           scroll-snap-x mandatory
           md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-10 md:space-x-0 md:px-0
           max-w-6xl mx-auto
-          mad:min-h-[950px]
         `}
-        style={{ overflowY: "hidden" }}
+        style={{ overflowY: "hidden", WebkitOverflowScrolling: "touch" }}
       >
-        {projects.map((project, index) => (
-          <motion.div
+        {projects.map((project) => (
+          <div
             key={project.title}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeInOut", delay: index * 0.1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            className="bg-gray-800 min-w-[280px] min-h-[440px] rounded-2xl shadow-lg overflow-hidden border border-violet-500
-              transition-all duration-300 flex flex-col
-              hover:shadow-[0_4px_15px_rgba(139,92,246,0.4)]
-              motion-safe:opacity-100 motion-safe:transition
-            "
+            className="bg-gray-800 min-w-[280px] min-h-[440px] rounded-2xl shadow-lg overflow-hidden border border-violet-500 transition-shadow duration-300 hover:shadow-[0_4px_15px_rgba(139,92,246,0.4)] flex flex-col"
             style={{ scrollSnapAlign: "start" }}
           >
             <div className="aspect-video">
@@ -138,7 +213,7 @@ const Projects = () => {
                 <span>View on GitHub</span>
               </a>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>
