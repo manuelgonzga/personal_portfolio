@@ -65,8 +65,8 @@ const Experience = () => {
   const [lineHeight, setLineHeight] = useState(0);
   const containerRef = useRef(null);
   const itemsRef = useRef([]);
-
   const [itemsOffset, setItemsOffset] = useState([]);
+  const [showHint, setShowHint] = useState(true);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -132,15 +132,52 @@ const Experience = () => {
           <ul className="space-y-16 relative z-10">
             {experiences.map((exp, index) => {
               const isLastTwo = index >= experiences.length - 2;
+              const isHint = showHint && index === 0;
 
               return (
                 <li
                   key={index}
                   ref={(el) => (itemsRef.current[index] = el)}
                   className="relative pl-14 cursor-pointer group flex items-start"
-                  onClick={() => setSelectedIndex(selectedIndex === index ? null : index)}
+                  onClick={() => {
+                    setSelectedIndex(selectedIndex === index ? null : index);
+                    setShowHint(false);
+                  }}
                 >
-                  {/* Nota animada a la izquierda en escritorio */}
+                  {/* Hint animada */}
+                  <AnimatePresence>
+                    {isHint && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.5 }}
+                        className="absolute -top-8 left-12 bg-yellow-100 text-yellow-900 px-3 py-1 text-sm rounded-full shadow-lg animate-bounce"
+                      >
+                        👉 Tap a dot!
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Punto */}
+                  <span
+                    className={`absolute left-3 top-3 w-6 h-6 rounded-full border-4 border-white transition-transform ${
+                      selectedIndex === index ? "bg-violet-500 scale-125" : "bg-gray-700"
+                    }`}
+                  />
+
+                  {/* Título y fecha animados */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={isVisible(index) ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+                    transition={{ duration: 0.5, delay: index * 0.15 }}
+                    className="flex flex-col"
+                  >
+                    <h3 className="font-semibold text-xl text-white">{exp.title}</h3>
+                    <span className="text-sm text-gray-400">{exp.date}</span>
+                  </motion.div>
+
+                  {/* Nota */}
                   <AnimatePresence>
                     {selectedIndex === index && (
                       <>
@@ -157,7 +194,6 @@ const Experience = () => {
                             bottom: isLastTwo ? 0 : "auto",
                           }}
                         >
-                          {/* Flecha apuntando */}
                           <div
                             style={{
                               position: "absolute",
@@ -175,7 +211,7 @@ const Experience = () => {
                           <div className="text-sm leading-relaxed">{exp.description}</div>
                         </motion.div>
 
-                        {/* Modal en móvil */}
+                        {/* Modal móvil */}
                         <motion.div
                           initial={{ opacity: 0, y: 50 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -206,24 +242,6 @@ const Experience = () => {
                       </>
                     )}
                   </AnimatePresence>
-
-                  {/* Punto */}
-                  <span
-                    className={`absolute left-3 top-3 w-6 h-6 rounded-full border-4 border-white transition-transform ${
-                      selectedIndex === index ? "bg-violet-500 scale-125" : "bg-gray-700"
-                    }`}
-                  />
-
-                  {/* Título y fecha animados según línea */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={isVisible(index) ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-                    transition={{ duration: 0.5, delay: index * 0.15 }}
-                    className="flex flex-col"
-                  >
-                    <h3 className="font-semibold text-xl text-white">{exp.title}</h3>
-                    <span className="text-sm text-gray-400">{exp.date}</span>
-                  </motion.div>
                 </li>
               );
             })}
