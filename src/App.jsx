@@ -1,3 +1,4 @@
+import ChatWidget from "./components/ChatWidget";
 import Experience from "./components/Experience";
 import Footer from "./components/Footer";
 import Header from "./components/Header"
@@ -13,6 +14,7 @@ export default function App() {
       <Projects />
       <Experience />
       <Footer />
+      <ChatWidget />
     </>
   )
 }
