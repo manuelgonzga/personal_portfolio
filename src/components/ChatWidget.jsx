@@ -112,7 +112,7 @@ const ChatWidget = () => {
             {/* Overlay oscuro si espera mucho */}
             {showWaitingMsg && (
               <div className="absolute inset-0 bg-black bg-opacity-60 z-40 flex flex-col justify-center items-center p-4 rounded-2xl text-gray-300 text-center select-none">
-                <p className="mb-3 text-lg italic">Give me a second... connecting with ManuelBot 🤖</p>
+                <p className="mb-3 text-lg italic">Connecting with ManuelBot... This could take a few minutes. 🤖</p>
                 <LoadingDots />
               </div>
             )}

@@ -25,11 +25,11 @@ const projects = [
     youtube: "https://www.youtube.com/embed/JWUqel50S1M",
   },
   {
-    title: "Generala Dice Game",
+    title: "Custom AI Chatbot",
     description:
-      "This project is a simulation of the dice game Generala, implemented in Python 3, using multithreading to run and compare the performance of different playing strategies. It was developed in collaboration with classmates.",
-    github: "https://github.com/manuelgonzga/generala_game",
-    youtube: "https://www.youtube.com/embed/cxmAmxS21R0",
+      "This AI chatbot utilizes natural language processing and a deep learning model built with Python, Keras, and Flask. It processes user input to predict intent and generate context-aware responses through a RESTful API.",
+    github: "https://github.com/manuelgonzga/chatbot_backend",
+    youtube: "https://www.youtube.com/embed/0NwB_ot78Qk",
   },
   {
     title: "Emprecicla",
