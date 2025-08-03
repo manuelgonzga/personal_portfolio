@@ -47,8 +47,8 @@ const AboutModal = ({ onClose }) => {
 
           {/* Download CV Button */}
           <a
-            href="/CV_ManuelGonzálezGamito.pdf"
-            download="CV_ManuelGonzálezGamito.pdf"
+            href="/ManuelGonzálezGamito_CV.pdf"
+            download="ManuelGonzálezGamito_CV.pdf"
             className="inline-block bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-colors"
           >
             Download CV
