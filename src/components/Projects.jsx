@@ -1,10 +1,17 @@
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FiGithub, FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { FiGithub, FiChevronRight, FiChevronLeft, FiDownload } from "react-icons/fi";
 
 const projects = [
   {
-    title: "Parlot Language Platform",
+    title: "Nestly - Finance App",
+    description:
+      "Full-stack mobile app for managing personal finances, developed with React Native, Node.js, and PostgreSQL. It supports tracking of income, expenses, and savings through a clean interface and real-time state updates.",
+    playStore: "https://play.google.com/store/apps/details?id=com.nestly.finance", // Reemplaza con la URL real de tu app
+    youtube: "https://www.youtube.com/embed/jdgqn2pPxP4",
+  },
+  {
+    title: "Parlot - Language Platform",
     description:
       "This project is designed for online language learning. It was developed as part of an academic assignment together with classmates, using modern technologies such as Java, Spring Boot, and Maven.",
     github: "https://github.com/manuelgonzga/g3-Parlot",
@@ -37,13 +44,6 @@ const projects = [
       "Emprecicla is an Angular-based web app (TypeScript, HTML, CSS) that connects users and businesses to promote recycling and sustainable material management.",
     github: "https://github.com/manuelgonzga/emprecicla-main",
     youtube: "https://www.youtube.com/embed/2mmgG0lWt1E",
-  },
-  {
-    title: "Tic-Tac-Toe Multiplayer",
-    description:
-      "This project is a network-based implementation of the classic Tic-Tac-Toe game using Python. It was developed collaboratively with classmates as part of a Distributed Systems course assignment.",
-    github: "https://github.com/manuelgonzga/tateti_SSDD",
-    youtube: "https://www.youtube.com/embed/AHIeSqH7jTs",
   },
 ];
 
@@ -134,15 +134,27 @@ const Projects = () => {
                   <p className="text-gray-300 text-sm leading-relaxed">
                     {project.description}
                   </p>
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center space-x-2 text-violet-400 hover:text-violet-300 font-medium mt-auto"
-                  >
-                    <FiGithub className="w-5 h-5" />
-                    <span>View on GitHub</span>
-                  </a>
+                  {project.playStore ? (
+                    <a
+                      href={project.playStore}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center space-x-2 text-violet-400 hover:text-violet-300 font-medium mt-auto"
+                    >
+                      <FiDownload className="w-5 h-5" />
+                      <span>View on Google Play</span>
+                    </a>
+                  ) : (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center space-x-2 text-violet-400 hover:text-violet-300 font-medium mt-auto"
+                    >
+                      <FiGithub className="w-5 h-5" />
+                      <span>View on GitHub</span>
+                    </a>
+                  )}
                 </div>
               </div>
             );
@@ -177,15 +189,27 @@ const Projects = () => {
                 <p className="text-gray-300 text-sm leading-relaxed">
                   {project.description}
                 </p>
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-2 text-violet-400 hover:text-violet-300 font-medium mt-auto"
-                >
-                  <FiGithub className="w-5 h-5" />
-                  <span>View on GitHub</span>
-                </a>
+                {project.playStore ? (
+                  <a
+                    href={project.playStore}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-2 text-violet-400 hover:text-violet-300 font-medium mt-auto"
+                  >
+                    <FiDownload className="w-5 h-5" />
+                    <span>View on Google Play</span>
+                  </a>
+                ) : (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-2 text-violet-400 hover:text-violet-300 font-medium mt-auto"
+                  >
+                    <FiGithub className="w-5 h-5" />
+                    <span>View on GitHub</span>
+                  </a>
+                )}
               </div>
             </motion.div>
           );
