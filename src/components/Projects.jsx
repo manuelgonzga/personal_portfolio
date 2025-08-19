@@ -7,7 +7,7 @@ const projects = [
     title: "Nestly - Finance App",
     description:
       "Full-stack mobile app for managing personal finances, developed with React Native, Node.js, and PostgreSQL. It supports tracking of income, expenses, and savings through a clean interface and real-time state updates.",
-    playStore: "https://play.google.com/store/apps/details?id=com.nestly.finance", // Reemplaza con la URL real de tu app
+    playStore: "https://play.google.com/store/apps/details?id=com.manuglezg.nestly&hl=es", // Reemplaza con la URL real de tu app
     youtube: "https://www.youtube.com/embed/jdgqn2pPxP4",
   },
   {
